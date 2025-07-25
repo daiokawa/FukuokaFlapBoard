@@ -173,6 +173,9 @@ async function loadFlights() {
             : '<span></span><span>航空会社</span><span>出発地</span><span>便名</span><span>到着時刻</span><span>状況</span><span>手荷物</span>';
         container.appendChild(headerRow);
         
+        // モバイル判定
+        const isMobile = window.innerWidth <= 480;
+        
         flights.forEach((flight, index) => {
             const row = document.createElement('div');
             row.className = 'flight-row';
@@ -193,44 +196,64 @@ async function loadFlights() {
             } else {
                 logoDiv.textContent = flight.airlineLogo || '✈️';
             }
-            row.appendChild(logoDiv);
-            
-            // Add airline name
-            const nameDiv = document.createElement('div');
-            nameDiv.className = 'airline-name';
-            nameDiv.textContent = flight.airline || '不明';
-            row.appendChild(nameDiv);
-            
-            const fields = currentType === 'departure' 
-                ? [
-                    { text: flight.destination || '不明', width: 10 },
-                    { text: flight.flightNo || 'XX000', width: 7 },
-                    { text: flight.time || '00:00', width: 5 },
-                    { text: flight.status || '不明', width: 10 },
-                    { text: flight.gate || '-', width: 3 }
-                  ]
-                : [
-                    { text: flight.origin || '不明', width: 10 },
-                    { text: flight.flightNo || 'XX000', width: 7 },
-                    { text: flight.time || '00:00', width: 5 },
-                    { text: flight.status || '不明', width: 10 },
-                    { text: flight.baggage || '-', width: 1 }
-                  ];
-            
-            fields.forEach(field => {
-                const displayContainer = document.createElement('div');
-                displayContainer.className = 'flap-display';
-                row.appendChild(displayContainer);
+            if (!isMobile) {
+                row.appendChild(logoDiv);
                 
-                const text = field.text.toUpperCase().padEnd(field.width, ' ').substring(0, field.width);
+                // Add airline name
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'airline-name';
+                nameDiv.textContent = flight.airline || '不明';
+                row.appendChild(nameDiv);
+            }
+            
+            if (isMobile) {
+                // モバイル用のシンプルな表示
+                row.innerHTML = `
+                    <div class="flight-info-mobile">
+                        <div class="flight-main">
+                            <span class="flight-number">${flight.flightNo}</span>
+                            <span class="flight-dest">${currentType === 'departure' ? flight.destination : flight.origin}</span>
+                        </div>
+                        <div class="flight-time">${flight.time}</div>
+                    </div>
+                    <div class="flight-info-mobile">
+                        <div class="flight-airline">${flight.airlineLogo} ${flight.airline}</div>
+                        <div class="flight-status ${flight.status.includes('遅れ') ? 'delayed' : flight.status.includes('搭乗') ? 'boarding' : ''}">${flight.status}</div>
+                    </div>
+                `;
+            } else {
+                // デスクトップ用の通常表示
+                const fields = currentType === 'departure' 
+                    ? [
+                        { text: flight.destination || '不明', width: 10 },
+                        { text: flight.flightNo || 'XX000', width: 7 },
+                        { text: flight.time || '00:00', width: 5 },
+                        { text: flight.status || '不明', width: 10 },
+                        { text: flight.gate || '-', width: 3 }
+                      ]
+                    : [
+                        { text: flight.origin || '不明', width: 10 },
+                        { text: flight.flightNo || 'XX000', width: 7 },
+                        { text: flight.time || '00:00', width: 5 },
+                        { text: flight.status || '不明', width: 10 },
+                        { text: flight.baggage || '-', width: 1 }
+                      ];
                 
-                setTimeout(() => {
-                    const display = createFlapDisplay(text, displayContainer);
-                    if (display) {
-                        flightDisplays.push(display);
-                    }
-                }, index * 100);
-            });
+                fields.forEach(field => {
+                    const displayContainer = document.createElement('div');
+                    displayContainer.className = 'flap-display';
+                    row.appendChild(displayContainer);
+                    
+                    const text = field.text.toUpperCase().padEnd(field.width, ' ').substring(0, field.width);
+                    
+                    setTimeout(() => {
+                        const display = createFlapDisplay(text, displayContainer);
+                        if (display) {
+                            flightDisplays.push(display);
+                        }
+                    }, index * 100);
+                });
+            }
             
             container.appendChild(row);
         });
@@ -264,6 +287,39 @@ async function updateWeather() {
         document.getElementById('weather').textContent = '☀️ 晴れ';
     }
 }
+
+// モバイルでのタッチ操作対応
+if ('ontouchstart' in window) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    document.getElementById('flap-container').addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    document.getElementById('flap-container').addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            // 左スワイプ - 切り替え
+            document.getElementById('toggle-btn').click();
+        }
+        if (touchEndX > touchStartX + 50) {
+            // 右スワイプ - 切り替え
+            document.getElementById('toggle-btn').click();
+        }
+    }
+}
+
+// デバイスの向き変更を検知
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        loadFlights();
+    }, 500);
+});
 
 loadFlights();
 setInterval(loadFlights, 180000);

@@ -1,0 +1,182 @@
+/* スマホ用レスポンシブデザイン */
+
+/* スマホ縦向き */
+@media only screen and (max-width: 480px) and (orientation: portrait) {
+    .container {
+        padding: 5px;
+    }
+    
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px 5px;
+        gap: 8px;
+    }
+    
+    .header-left h1 {
+        font-size: 16px;
+        text-align: center;
+        margin: 0;
+    }
+    
+    .info-row {
+        justify-content: center;
+        font-size: 12px;
+        gap: 10px;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+        padding: 0 10px;
+    }
+    
+    #clock {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .toggle-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    /* フライトテーブルを簡略化 */
+    .header-row {
+        display: none; /* ヘッダーを非表示 */
+    }
+    
+    .flight-row {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+        margin-bottom: 8px;
+        background: #252736;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    
+    .flight-row .airline-logo {
+        display: none;
+    }
+    
+    .flap-display {
+        background: transparent;
+        padding: 2px;
+        border: none;
+        font-size: 14px;
+        margin: 2px 0;
+    }
+    
+    /* モバイル用の新しいレイアウト */
+    .flight-info-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+    
+    .flight-main {
+        font-weight: bold;
+    }
+    
+    .flight-status {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        background: #3a3d4e;
+    }
+    
+    .flight-status.delayed {
+        background: #e74c3c;
+    }
+    
+    .flight-status.boarding {
+        background: #27ae60;
+    }
+}
+
+/* スマホ横向き */
+@media only screen and (max-width: 896px) and (orientation: landscape) {
+    .container {
+        padding: 5px;
+    }
+    
+    header {
+        height: 50px;
+        padding: 5px 10px;
+    }
+    
+    .header-left h1 {
+        font-size: 16px;
+    }
+    
+    .info-row {
+        font-size: 11px;
+        gap: 8px;
+    }
+    
+    #clock {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .toggle-button {
+        font-size: 11px;
+        padding: 4px 10px;
+    }
+    
+    .flap-container {
+        height: calc(100vh - 60px);
+    }
+    
+    /* 列を削減 */
+    .header-row,
+    .flight-row {
+        grid-template-columns: 30px 80px 1fr 60px 70px;
+        font-size: 11px;
+        gap: 5px;
+        padding: 4px 0;
+    }
+    
+    /* 搭乗口/手荷物列を非表示 */
+    .header-row > span:nth-child(6),
+    .header-row > span:nth-child(7),
+    .flight-row > *:nth-child(6),
+    .flight-row > *:nth-child(7) {
+        display: none;
+    }
+    
+    .airline-logo img {
+        height: 18px;
+    }
+    
+    .flap-display {
+        font-size: 11px;
+        padding: 2px;
+        letter-spacing: -0.5px;
+    }
+}
+
+/* タッチ対応 */
+@media (hover: none) and (pointer: coarse) {
+    .toggle-button,
+    .flight-row {
+        min-height: 44px; /* Apple推奨の最小タッチターゲット */
+    }
+    
+    /* スクロールの改善 */
+    .flap-container {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* iPhone X以降のノッチ対応 */
+@supports (padding: env(safe-area-inset-top)) {
+    .container {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
