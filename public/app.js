@@ -172,6 +172,9 @@ async function loadFlights() {
             return;
         }
         
+        // モバイル判定
+        const isMobile = window.innerWidth <= 480;
+        
         // Add header row
         const headerRow = document.createElement('div');
         headerRow.className = 'header-row';
@@ -185,9 +188,6 @@ async function loadFlights() {
                 : '<span></span><span>航空会社</span><span>出発地</span><span>便名</span><span>到着時刻</span><span>状況</span><span>手荷物</span>';
         }
         container.appendChild(headerRow);
-        
-        // モバイル判定
-        const isMobile = window.innerWidth <= 480;
         
         flights.forEach((flight, index) => {
             const row = document.createElement('div');
