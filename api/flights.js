@@ -3,43 +3,43 @@
 // 航空会社マッピング（拡張版）
 const airlineMap = {
   // 韓国系
-  'KE': { name: '大韓航空', logo: '🇰🇷✈️' },
-  'OZ': { name: 'アシアナ航空', logo: '🇰🇷✈️' },
-  'TW': { name: 'ティーウェイ航空', logo: '🇰🇷✈️' },
-  'LJ': { name: 'ジンエアー', logo: '🇰🇷✈️' },
-  '7C': { name: 'チェジュ航空', logo: '🇰🇷✈️' },
-  'BX': { name: 'エアプサン', logo: '🇰🇷✈️' },
-  'ZE': { name: 'イースター航空', logo: '🇰🇷✈️' },
-  'RS': { name: 'エアソウル', logo: '🇰🇷✈️' },
+  'KE': { name: '大韓航空', logo: '🇰🇷✈️', image: 'https://airhex.com/images/airline-logos/korean-air.png' },
+  'OZ': { name: 'アシアナ航空', logo: '🇰🇷✈️', image: 'https://airhex.com/images/airline-logos/asiana-airlines.png' },
+  'TW': { name: 'ティーウェイ航空', logo: '🇰🇷✈️', image: 'https://airhex.com/images/airline-logos/tway-air.png' },
+  'LJ': { name: 'ジンエアー', logo: '🇰🇷✈️', image: 'https://airhex.com/images/airline-logos/jin-air.png' },
+  '7C': { name: 'チェジュ航空', logo: '🇰🇷✈️', image: 'https://airhex.com/images/airline-logos/jeju-air.png' },
+  'BX': { name: 'エアプサン', logo: '🇰🇷✈️', image: 'https://airhex.com/images/airline-logos/air-busan.png' },
+  'ZE': { name: 'イースター航空', logo: '🇰🇷✈️', image: 'https://pics.avs.io/200/200/ZE.png' },
+  'RS': { name: 'エアソウル', logo: '🇰🇷✈️', image: 'https://pics.avs.io/200/200/RS.png' },
   
   // 中国系
-  'MU': { name: '中国東方航空', logo: '🇨🇳✈️' },
-  'CA': { name: '中国国際航空', logo: '🇨🇳✈️' },
-  '9C': { name: '春秋航空', logo: '🇨🇳✈️' },
-  'FM': { name: '上海航空', logo: '🇨🇳✈️' },
-  'HO': { name: '吉祥航空', logo: '🇨🇳✈️' },
+  'MU': { name: '中国東方航空', logo: '🇨🇳✈️', image: 'https://pics.avs.io/200/200/MU.png' },
+  'CA': { name: '中国国際航空', logo: '🇨🇳✈️', image: 'https://pics.avs.io/200/200/CA.png' },
+  '9C': { name: '春秋航空', logo: '🇨🇳✈️', image: 'https://pics.avs.io/200/200/9C.png' },
+  'FM': { name: '上海航空', logo: '🇨🇳✈️', image: 'https://pics.avs.io/200/200/FM.png' },
+  'HO': { name: '吉祥航空', logo: '🇨🇳✈️', image: 'https://pics.avs.io/200/200/HO.png' },
   
   // 台湾系
-  'CI': { name: 'チャイナエアライン', logo: '🇹🇼✈️' },
-  'BR': { name: 'エバー航空', logo: '🇹🇼✈️' },
-  'IT': { name: 'タイガーエア台湾', logo: '🇹🇼✈️' },
-  'JX': { name: 'スターラックス航空', logo: '🇹🇼✈️' },
+  'CI': { name: 'チャイナエアライン', logo: '🇹🇼✈️', image: 'https://pics.avs.io/200/200/CI.png' },
+  'BR': { name: 'エバー航空', logo: '🇹🇼✈️', image: 'https://pics.avs.io/200/200/BR.png' },
+  'IT': { name: 'タイガーエア台湾', logo: '🇹🇼✈️', image: 'https://pics.avs.io/200/200/IT.png' },
+  'JX': { name: 'スターラックス航空', logo: '🇹🇼✈️', image: 'https://pics.avs.io/200/200/JX.png' },
   
   // 香港
-  'CX': { name: 'キャセイパシフィック', logo: '🇭🇰✈️' },
-  'UO': { name: '香港エクスプレス', logo: '🇭🇰✈️' },
-  'HX': { name: '香港航空', logo: '🇭🇰✈️' },
+  'CX': { name: 'キャセイパシフィック', logo: '🇭🇰✈️', image: 'https://pics.avs.io/200/200/CX.png' },
+  'UO': { name: '香港エクスプレス', logo: '🇭🇰✈️', image: 'https://pics.avs.io/200/200/UO.png' },
+  'HX': { name: '香港航空', logo: '🇭🇰✈️', image: 'https://pics.avs.io/200/200/HX.png' },
   
   // 東南アジア
-  'SQ': { name: 'シンガポール航空', logo: '🇸🇬✈️' },
-  'TG': { name: 'タイ国際航空', logo: '🇹🇭✈️' },
-  'PR': { name: 'フィリピン航空', logo: '🇵🇭✈️' },
-  '5J': { name: 'セブパシフィック', logo: '🇵🇭✈️' },
-  'VN': { name: 'ベトナム航空', logo: '🇻🇳✈️' },
+  'SQ': { name: 'シンガポール航空', logo: '🇸🇬✈️', image: 'https://pics.avs.io/200/200/SQ.png' },
+  'TG': { name: 'タイ国際航空', logo: '🇹🇭✈️', image: 'https://pics.avs.io/200/200/TG.png' },
+  'PR': { name: 'フィリピン航空', logo: '🇵🇭✈️', image: 'https://pics.avs.io/200/200/PR.png' },
+  '5J': { name: 'セブパシフィック', logo: '🇵🇭✈️', image: 'https://pics.avs.io/200/200/5J.png' },
+  'VN': { name: 'ベトナム航空', logo: '🇻🇳✈️', image: 'https://pics.avs.io/200/200/VN.png' },
   
   // 日本
-  'JL': { name: '日本航空', logo: '🇯🇵✈️' },
-  'NH': { name: '全日空', logo: '🇯🇵✈️' }
+  'JL': { name: '日本航空', logo: '🇯🇵✈️', image: 'https://pics.avs.io/200/200/JL.png' },
+  'NH': { name: '全日空', logo: '🇯🇵✈️', image: 'https://pics.avs.io/200/200/NH.png' }
 };
 
 // 実際の福岡空港フライトスケジュール
@@ -174,7 +174,7 @@ function generateRealisticSchedule(type) {
         destinationEn: flight.dest,
         airline: airline.name,
         airlineLogo: airline.logo,
-        airlineImage: null,
+        airlineImage: airline.image || null,
         flightNo: flight.flightNo,
         time: displayTime,
         scheduled: flight.time,
@@ -298,7 +298,7 @@ function generateRealisticSchedule(type) {
         originEn: flight.origin,
         airline: airline.name,
         airlineLogo: airline.logo,
-        airlineImage: null,
+        airlineImage: airline.image || null,
         flightNo: flight.flightNo,
         time: displayTime,
         scheduled: flight.time,
