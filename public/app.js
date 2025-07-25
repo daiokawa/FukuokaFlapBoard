@@ -163,8 +163,8 @@ async function loadFlights() {
         const headerRow = document.createElement('div');
         headerRow.className = 'header-row';
         headerRow.innerHTML = currentType === 'departure' 
-            ? '<span></span><span>航空会社</span><span>目的地</span><span>便名</span><span>出発予定時刻</span><span>状況</span><span>搭乗口</span>'
-            : '<span></span><span>航空会社</span><span>出発地</span><span>便名</span><span>到着予定時刻</span><span>状況</span><span>手荷物</span>';
+            ? '<span></span><span>航空会社</span><span>目的地</span><span>便名</span><span>出発時刻</span><span>状況</span><span>搭乗口</span>'
+            : '<span></span><span>航空会社</span><span>出発地</span><span>便名</span><span>到着時刻</span><span>状況</span><span>手荷物</span>';
         container.appendChild(headerRow);
         
         flights.forEach((flight, index) => {

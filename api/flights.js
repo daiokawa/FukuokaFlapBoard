@@ -53,6 +53,7 @@ function generateRealisticSchedule(type) {
   const currentTimeMinutes = currentHour * 60 + currentMinute;
   
   console.log('Current JST time:', currentHour + ':' + currentMinute, 'Total minutes:', currentTimeMinutes);
+  console.log('Sample flight with delay: KE790 scheduled 16:25, actual 17:25');
   
   if (type === 'departure') {
     const departures = [
@@ -154,15 +155,17 @@ function generateRealisticSchedule(type) {
         status = '定刻';
       }
       
-      // 特定の便の状態を設定
-      if (flight.flightNo === 'KE790' && diff > 0) status = '使用機到着遅れ';
-      if (flight.flightNo === 'CX589' && diff > -30 && diff < 30) status = '搭乗終了';
-      if (flight.flightNo === 'ZE644' && diff > -30 && diff < 60) status = '搭乗手続き終了';
-      if (flight.flightNo === 'TW206' && diff > 0) status = '使用機到着遅れ';
-      if (flight.flightNo === '7C1406' && diff > -30 && diff < 60) status = '搭乗手続き終了';
-      if (flight.flightNo === 'LJ266' && diff > 0) status = '使用機到着遅れ';
-      if (flight.flightNo === 'TW216' && diff > 0) status = '使用機到着遅れ';
-      if (flight.flightNo === '7C1408' && diff > 0) status = '使用機到着遅れ';
+      // 特定の便の状態を設定（実際の時刻がない場合のみ）
+      if (!flight.actual) {
+        if (flight.flightNo === 'KE790' && diff > 0) status = '使用機到着遅れ';
+        if (flight.flightNo === 'CX589' && diff > -30 && diff < 30) status = '搭乗終了';
+        if (flight.flightNo === 'ZE644' && diff > -30 && diff < 60) status = '搭乗手続き終了';
+        if (flight.flightNo === 'TW206' && diff > 0) status = '使用機到着遅れ';
+        if (flight.flightNo === '7C1406' && diff > -30 && diff < 60) status = '搭乗手続き終了';
+        if (flight.flightNo === 'LJ266' && diff > 0) status = '使用機到着遅れ';
+        if (flight.flightNo === 'TW216' && diff > 0) status = '使用機到着遅れ';
+        if (flight.flightNo === '7C1408' && diff > 0) status = '使用機到着遅れ';
+      }
       
       const airline = airlineMap[flight.airline] || { name: flight.airline, logo: '✈️' };
       
