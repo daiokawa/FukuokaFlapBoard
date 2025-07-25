@@ -5,9 +5,9 @@
 }
 
 body {
-    background-color: #1b1d2a;
+    background-color: #000;
     color: #fff;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Noto Sans JP', 'JetBrains Mono', monospace;
     overflow: hidden;
     width: 100vw;
     height: 100vh;
@@ -18,35 +18,31 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    background: #000;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #2e3142;
+    padding: 20px 40px;
+    background: #111;
+    border-bottom: 3px solid #333;
 }
 
 .header-left h1 {
-    font-size: 24px;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
+    font-size: 28px;
     font-weight: 700;
+    margin: 0;
+    letter-spacing: 2px;
 }
 
 .info-row {
     display: flex;
-    align-items: baseline;
-    gap: 15px;
-    font-size: 14px;
+    gap: 20px;
+    font-size: 16px;
     color: #ccc;
-}
-
-.info-row span {
-    display: inline-block;
+    margin-top: 8px;
 }
 
 .header-right {
@@ -56,112 +52,104 @@ header {
 }
 
 #clock {
-    border: none;
-    border-radius: 50%;
-    background: transparent;
+    filter: invert(1);
 }
 
 .toggle-button {
-    background: transparent;
-    color: #fff;
-    border: 2px solid #fff;
-    padding: 10px 20px;
+    background: #222;
+    color: #0f0;
+    border: 2px solid #0f0;
+    padding: 10px 25px;
     font-size: 16px;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 500;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    border-radius: 4px;
+    transition: all 0.3s;
+    letter-spacing: 1px;
 }
 
 .toggle-button:hover {
-    background: #fff;
+    background: #0f0;
     color: #000;
 }
 
 .flap-container {
     flex: 1;
+    background: #000;
     overflow-y: auto;
-    overflow-x: hidden;
-    background: #191b26;
-    padding: 5px;
-    border: 2px solid #2e3142;
+    position: relative;
 }
 
 .loading {
     text-align: center;
-    font-size: 20px;
-    margin-top: 50px;
-    color: #666;
+    font-size: 24px;
+    color: #0f0;
+    padding: 50px;
+    letter-spacing: 2px;
 }
 
+/* ヘッダー行 */
 .header-row {
     display: grid;
-    grid-template-columns: 40px 120px 1fr 0.7fr 0.7fr 0.8fr 0.5fr;
-    gap: 8px;
-    margin-bottom: 5px;
-    padding: 5px 0;
-    border-bottom: 1px solid #444;
+    grid-template-columns: 60px 180px 200px 100px 100px 180px 80px;
+    gap: 15px;
+    padding: 15px 40px;
+    background: #1a1a1a;
     font-weight: bold;
-    color: #999;
-    font-size: 12px;
+    color: #888;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
+/* フライト行 */
 .flight-row {
     display: grid;
-    grid-template-columns: 40px 120px 150px 80px 70px 140px 60px;
-    gap: 8px;
-    margin-bottom: 0;
-    padding: 2px 0;
-    border-bottom: none;
+    grid-template-columns: 60px 180px 200px 100px 100px 180px 80px;
+    gap: 15px;
+    padding: 25px 40px;
+    border-bottom: 1px solid #1a1a1a;
     align-items: center;
-    background: #161823;
+    background: #000;
+    transition: background 0.2s;
 }
 
+.flight-row:hover {
+    background: #0a0a0a;
+}
+
+/* 航空会社ロゴ */
 .airline-logo {
-    font-size: 28px;
-    text-align: center;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 50px;
+    background: #111;
+    border-radius: 4px;
 }
 
 .airline-logo img {
-    height: 25px;
-    width: auto;
     max-width: 40px;
+    max-height: 40px;
     object-fit: contain;
 }
 
 .airline-emoji {
-    font-size: 28px;
-    line-height: 1;
+    font-size: 32px;
 }
 
+/* 航空会社名 */
 .airline-name {
-    font-size: 0.85em;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #ccc;
-}
-
-.flap-display {
-    background: #000;
-    padding: 4px 6px;
-    border: 1px solid #333;
-    border-radius: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
     font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 1px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+    color: #fff;
 }
 
-/* 日本語表示用スタイル */
+/* フライト情報の各項目 */
 .flight-destination,
 .flight-origin,
 .flight-number,
@@ -169,135 +157,75 @@ header {
 .flight-status,
 .flight-gate,
 .flight-baggage {
-    font-family: 'Noto Sans JP', 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Noto Sans JP', monospace;
     font-weight: 600;
-    color: #00ff00;
-    background: #000;
-    padding: 8px 12px;
-    border: 1px solid #333;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .flight-destination,
 .flight-origin {
-    min-width: 120px;
-    font-size: 18px;
+    font-size: 22px;
+    color: #0f0;
+    letter-spacing: 1px;
 }
 
 .flight-number {
-    min-width: 80px;
     font-size: 20px;
-    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+    letter-spacing: 2px;
 }
 
 .flight-time {
-    min-width: 60px;
-    font-size: 20px;
-    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    color: #0f0;
+    font-weight: 700;
+    letter-spacing: 2px;
 }
 
 .flight-status {
-    min-width: 120px;
-    font-size: 16px;
+    font-size: 18px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
 }
 
 .flight-status.delayed {
-    color: #ff6b6b;
+    background: #300;
+    color: #f00;
+    border: 1px solid #f00;
 }
 
 .flight-status.boarding {
-    color: #ffeb3b;
+    background: #330;
+    color: #ff0;
+    border: 1px solid #ff0;
+    animation: pulse 1.5s infinite;
 }
 
 .flight-status.ontime {
-    color: #4caf50;
+    background: #030;
+    color: #0f0;
+    border: 1px solid #0f0;
 }
 
 .flight-gate,
 .flight-baggage {
-    min-width: 50px;
-    font-size: 20px;
-    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
 }
 
-@media only screen and (max-width: 1024px) and (orientation: landscape) {
-    .container {
-        padding: 15px;
-    }
-    
-    header {
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-    }
-    
-    header h1 {
-        font-size: 22px;
-        margin-bottom: 8px;
-    }
-    
-    .info-row {
-        font-size: 14px;
-        gap: 20px;
-    }
-    
-    #clock {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .toggle-button {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-    
-    .flight-row {
-        grid-template-columns: 2fr 1fr 1fr 1fr 0.8fr;
-        gap: 10px;
-        margin-bottom: 10px;
-        padding: 8px 0;
-    }
-    
-    .flap-display {
-        padding: 3px;
-        font-size: 14px;
-    }
+/* アニメーション */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
 }
 
-@media only screen and (device-width: 810px) and (device-height: 1080px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2) {
-    html, body {
-        -webkit-text-size-adjust: 100%;
-    }
-    
-    .container {
-        max-height: 810px;
-        padding: 12px 20px;
-    }
-    
-    header {
-        margin-bottom: 15px;
-        padding-bottom: 12px;
-    }
-    
-    header h1 {
-        font-size: 20px;
-        letter-spacing: 1px;
-    }
-    
-    .info-row {
-        font-size: 13px;
-    }
-    
-    .flight-row {
-        margin-bottom: 8px;
-        padding: 6px 0;
-    }
-}
-
+/* スクロールバー */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -306,9 +234,61 @@ header {
 
 ::-webkit-scrollbar-thumb {
     background: #333;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1200px) {
+    .header-row,
+    .flight-row {
+        grid-template-columns: 50px 150px 180px 80px 80px 150px 70px;
+        gap: 10px;
+        padding: 15px 20px;
+    }
+    
+    .flight-destination,
+    .flight-origin {
+        font-size: 18px;
+    }
+    
+    .flight-time {
+        font-size: 20px;
+    }
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    header {
+        padding: 15px;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .header-left h1 {
+        font-size: 20px;
+    }
+    
+    .info-row {
+        font-size: 12px;
+        gap: 10px;
+    }
+    
+    .header-row,
+    .flight-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .airline-logo {
+        display: none;
+    }
+    
+    .airline-name {
+        display: none;
+    }
 }
