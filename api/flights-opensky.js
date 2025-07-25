@@ -2,55 +2,58 @@
 // 無料で利用可能、制限: 10秒に1リクエスト（匿名ユーザー）
 
 const airlineMap = {
+  // ICAOコードとIATAコードの両方でマッピング
   // 韓国系
-  'KAL': { name: '大韓航空', logo: '🇰🇷', iata: 'KE' },
-  'AAR': { name: 'アシアナ航空', logo: '🇰🇷', iata: 'OZ' },
-  'TWB': { name: 'ティーウェイ航空', logo: '🇰🇷', iata: 'TW' },
-  'JJA': { name: 'チェジュ航空', logo: '🇰🇷', iata: '7C' },
-  'JNA': { name: 'ジンエアー', logo: '🇰🇷', iata: 'LJ' },
-  'ABL': { name: 'エアプサン', logo: '🇰🇷', iata: 'BX' },
-  'ESR': { name: 'イースター航空', logo: '🇰🇷', iata: 'ZE' },
-  'RSQ': { name: 'エアソウル', logo: '🇰🇷', iata: 'RS' },
+  'KAL': { name: '大韓航空', logo: 'KE', iata: 'KE' },
+  'KE': { name: '大韓航空', logo: 'KE', iata: 'KE' },
+  'AAR': { name: 'アシアナ航空', logo: 'OZ', iata: 'OZ' },
+  'OZ': { name: 'アシアナ航空', logo: 'OZ', iata: 'OZ' },
+  'TWB': { name: 'ティーウェイ航空', logo: 'TW', iata: 'TW' },
+  'JJA': { name: 'チェジュ航空', logo: '7C', iata: '7C' },
+  'JNA': { name: 'ジンエアー', logo: 'LJ', iata: 'LJ' },
+  'ABL': { name: 'エアプサン', logo: 'BX', iata: 'BX' },
+  'ESR': { name: 'イースター航空', logo: 'ZE', iata: 'ZE' },
+  'RSQ': { name: 'エアソウル', logo: 'RS', iata: 'RS' },
   // 中国系
-  'CES': { name: '中国東方航空', logo: '🇨🇳', iata: 'MU' },
-  'CCA': { name: '中国国際航空', logo: '🇨🇳', iata: 'CA' },
-  'CSC': { name: '四川航空', logo: '🇨🇳', iata: '3U' },
-  'CSN': { name: '中国南方航空', logo: '🇨🇳', iata: 'CZ' },
-  'CQH': { name: '春秋航空', logo: '🇨🇳', iata: '9C' },
-  'CSH': { name: '上海航空', logo: '🇨🇳', iata: 'FM' },
-  'CDG': { name: '山東航空', logo: '🇨🇳', iata: 'SC' },
-  'CXA': { name: '厦門航空', logo: '🇨🇳', iata: 'MF' },
-  'CHH': { name: '海南航空', logo: '🇨🇳', iata: 'HU' },
-  'DKH': { name: '吉祥航空', logo: '🇨🇳', iata: 'HO' },
+  'CES': { name: '中国東方航空', logo: 'MU', iata: 'MU' },
+  'CCA': { name: '中国国際航空', logo: 'CA', iata: 'CA' },
+  'CSC': { name: '四川航空', logo: '3U', iata: '3U' },
+  'CSN': { name: '中国南方航空', logo: 'CZ', iata: 'CZ' },
+  'CQH': { name: '春秋航空', logo: '9C', iata: '9C' },
+  'CSH': { name: '上海航空', logo: 'FM', iata: 'FM' },
+  'CDG': { name: '山東航空', logo: 'SC', iata: 'SC' },
+  'CXA': { name: '厦門航空', logo: 'MF', iata: 'MF' },
+  'CHH': { name: '海南航空', logo: 'HU', iata: 'HU' },
+  'DKH': { name: '吉祥航空', logo: 'HO', iata: 'HO' },
   // 台湾系
-  'CAL': { name: 'チャイナエアライン', logo: '🇹🇼', iata: 'CI' },
-  'EVA': { name: 'エバー航空', logo: '🇹🇼', iata: 'BR' },
-  'TTW': { name: 'タイガーエア台湾', logo: '🇹🇼', iata: 'IT' },
-  'SJX': { name: 'スターラックス航空', logo: '🇹🇼', iata: 'JX' },
+  'CAL': { name: 'チャイナエアライン', logo: 'CI', iata: 'CI' },
+  'EVA': { name: 'エバー航空', logo: 'BR', iata: 'BR' },
+  'TTW': { name: 'タイガーエア台湾', logo: 'IT', iata: 'IT' },
+  'SJX': { name: 'スターラックス航空', logo: 'JX', iata: 'JX' },
   // 香港系
-  'CPA': { name: 'キャセイパシフィック', logo: '🇭🇰', iata: 'CX' },
-  'HDA': { name: '香港エクスプレス', logo: '🇭🇰', iata: 'UO' },
-  'CRK': { name: '香港航空', logo: '🇭🇰', iata: 'HX' },
+  'CPA': { name: 'キャセイパシフィック', logo: 'CX', iata: 'CX' },
+  'HDA': { name: '香港エクスプレス', logo: 'UO', iata: 'UO' },
+  'CRK': { name: '香港航空', logo: 'HX', iata: 'HX' },
   // 東南アジア系
-  'THA': { name: 'タイ国際航空', logo: '🇹🇭', iata: 'TG' },
-  'PAL': { name: 'フィリピン航空', logo: '🇵🇭', iata: 'PR' },
-  'CEB': { name: 'セブパシフィック', logo: '🇵🇭', iata: '5J' },
-  'VJC': { name: 'ベトジェット', logo: '🇻🇳', iata: 'VJ' },
-  'HVN': { name: 'ベトナム航空', logo: '🇻🇳', iata: 'VN' },
-  'SIA': { name: 'シンガポール航空', logo: '🇸🇬', iata: 'SQ' },
-  'SJY': { name: 'スクート', logo: '🇸🇬', iata: 'TR' },
-  'MAS': { name: 'マレーシア航空', logo: '🇲🇾', iata: 'MH' },
-  'AXM': { name: 'エアアジア', logo: '🇲🇾', iata: 'AK' },
+  'THA': { name: 'タイ国際航空', logo: 'TG', iata: 'TG' },
+  'PAL': { name: 'フィリピン航空', logo: 'PR', iata: 'PR' },
+  'CEB': { name: 'セブパシフィック', logo: '5J', iata: '5J' },
+  'VJC': { name: 'ベトジェット', logo: 'VJ', iata: 'VJ' },
+  'HVN': { name: 'ベトナム航空', logo: 'VN', iata: 'VN' },
+  'SIA': { name: 'シンガポール航空', logo: 'SQ', iata: 'SQ' },
+  'SJY': { name: 'スクート', logo: 'TR', iata: 'TR' },
+  'MAS': { name: 'マレーシア航空', logo: 'MH', iata: 'MH' },
+  'AXM': { name: 'エアアジア', logo: 'AK', iata: 'AK' },
   // 日本系
-  'JAL': { name: '日本航空', logo: '🇯🇵', iata: 'JL' },
-  'ANA': { name: '全日空', logo: '🇯🇵', iata: 'NH' },
-  'JJP': { name: 'ジェットスター・ジャパン', logo: '🇯🇵', iata: 'GK' },
-  'APJ': { name: 'ピーチ', logo: '🇯🇵', iata: 'MM' },
+  'JAL': { name: '日本航空', logo: 'JL', iata: 'JL' },
+  'ANA': { name: '全日空', logo: 'NH', iata: 'NH' },
+  'JJP': { name: 'ジェットスター・ジャパン', logo: 'GK', iata: 'GK' },
+  'APJ': { name: 'ピーチ', logo: 'MM', iata: 'MM' },
   // その他
-  'UAE': { name: 'エミレーツ航空', logo: '🇦🇪', iata: 'EK' },
-  'QTR': { name: 'カタール航空', logo: '🇶🇦', iata: 'QR' },
-  'FDX': { name: 'フェデックス', logo: '📦', iata: 'FX' },
-  'UPS': { name: 'UPS', logo: '📦', iata: '5X' }
+  'UAE': { name: 'エミレーツ航空', logo: 'EK', iata: 'EK' },
+  'QTR': { name: 'カタール航空', logo: 'QR', iata: 'QR' },
+  'FDX': { name: 'フェデックス', logo: 'FX', iata: 'FX' },
+  'UPS': { name: 'UPS', logo: '5X', iata: '5X' }
 };
 
 // 福岡空港のバウンディングボックス（緯度経度）
@@ -106,8 +109,18 @@ async function getOpenSkyFlights() {
       ] = state;
       
       // コールサインから航空会社を識別
-      const airlineCode = callsign ? callsign.trim().substring(0, 3) : '';
-      const airline = airlineMap[airlineCode] || { name: airlineCode, logo: '✈️', iata: airlineCode };
+      const trimmedCallsign = callsign ? callsign.trim() : '';
+      const airlineCode = trimmedCallsign.substring(0, 3).toUpperCase();
+      
+      // デバッグ用ログ
+      if (trimmedCallsign) {
+        console.log(`Callsign: ${trimmedCallsign}, Airline Code: ${airlineCode}`);
+      }
+      
+      // IATAコードでのマッピングも試す
+      const airline = airlineMap[airlineCode] || 
+                     Object.values(airlineMap).find(a => a.iata === trimmedCallsign.substring(0, 2)) ||
+                     { name: airlineCode, logo: '✈️', iata: airlineCode };
       
       // フライト番号を抽出
       const flightNumber = callsign ? callsign.trim() : 'N/A';

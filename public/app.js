@@ -197,11 +197,17 @@ async function loadFlights() {
                 img.alt = flight.airline;
                 img.onerror = function() {
                     this.style.display = 'none';
-                    logoDiv.textContent = flight.airlineLogo || '✈️';
+                    const emoji = document.createElement('span');
+                    emoji.className = 'airline-emoji';
+                    emoji.textContent = flight.airlineLogo || '✈️';
+                    logoDiv.appendChild(emoji);
                 };
                 logoDiv.appendChild(img);
             } else {
-                logoDiv.textContent = flight.airlineLogo || '✈️';
+                const emoji = document.createElement('span');
+                emoji.className = 'airline-emoji';
+                emoji.textContent = flight.airlineLogo || '✈️';
+                logoDiv.appendChild(emoji);
             }
             if (!isMobile) {
                 row.appendChild(logoDiv);
