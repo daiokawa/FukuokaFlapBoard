@@ -133,7 +133,8 @@ function createFlapDisplay(text, container) {
 async function loadFlights() {
     try {
         console.log('Loading flights...', currentType);
-        const response = await fetch(`/api/flights?type=${currentType}`);
+        // リアルタイムAPIを使用（シミュレーション版）
+        const response = await fetch(`/api/flights-realtime?type=${currentType}`);
         console.log('Response status:', response.status);
         const data = await response.json();
         console.log('Flight data:', data);

@@ -1,103 +1,125 @@
-// リアルタイムフライトデータ取得（API経由）
-const axios = require('axios');
+// リアルタイムフライトデータ取得（複数ソース対応）
 
-// 実際の航空会社マッピング（福岡空港の国際線）
-const airlineData = {
-  'KE': { name: '大韓航空', logo: '🇰🇷', destinations: ['ソウル/仁川', 'ソウル/金浦', '釜山'] },
-  'OZ': { name: 'アシアナ航空', logo: '🇰🇷', destinations: ['ソウル/仁川'] },
-  'TW': { name: 'ティーウェイ航空', logo: '🇰🇷', destinations: ['ソウル/仁川', '大邱'] },
-  'MU': { name: '中国東方航空', logo: '🇨🇳', destinations: ['上海/浦東'] },
-  'CA': { name: '中国国際航空', logo: '🇨🇳', destinations: ['北京', '大連'] },
-  'CI': { name: 'チャイナエアライン', logo: '🇹🇼', destinations: ['台北/桃園'] },
-  'BR': { name: 'エバー航空', logo: '🇹🇼', destinations: ['台北/桃園'] },
-  'CX': { name: 'キャセイパシフィック', logo: '🇭🇰', destinations: ['香港'] },
-  'SQ': { name: 'シンガポール航空', logo: '🇸🇬', destinations: ['シンガポール'] },
-  'TG': { name: 'タイ国際航空', logo: '🇹🇭', destinations: ['バンコク'] },
-  'VN': { name: 'ベトナム航空', logo: '🇻🇳', destinations: ['ハノイ', 'ホーチミン'] },
-  'PR': { name: 'フィリピン航空', logo: '🇵🇭', destinations: ['マニラ'] },
-  '3K': { name: 'ジェットスター・アジア', logo: '🇸🇬', destinations: ['シンガポール'] }
-};
+// FlightStats風のランダム遅延生成
+function generateRealisticDelay() {
+  const rand = Math.random();
+  if (rand < 0.6) return 0; // 60%は定刻
+  if (rand < 0.8) return Math.floor(Math.random() * 20) + 5; // 20%は5-25分遅延
+  if (rand < 0.95) return Math.floor(Math.random() * 40) + 25; // 15%は25-65分遅延
+  return Math.floor(Math.random() * 60) + 60; // 5%は60分以上遅延
+}
 
-function generateRealisticFlights(type) {
-  const flights = [];
+// 現在時刻に基づいてリアルな状態を生成
+function generateDynamicStatus(scheduledTime, actualTime, type = 'departure') {
   const now = new Date();
-  const currentHour = now.getHours();
-  const airlines = Object.keys(airlineData);
+  const jstOffset = 9 * 60;
+  const jstNow = new Date(now.getTime() + jstOffset * 60 * 1000);
+  const currentHour = jstNow.getUTCHours();
+  const currentMinute = jstNow.getUTCMinutes();
+  const currentTimeMinutes = currentHour * 60 + currentMinute;
   
-  // 時間帯に応じたリアルなフライトスケジュール
-  const schedules = type === 'departure' ? [
-    { time: '09:00', airline: 'KE', dest: 0, status: '搭乗中', gate: '51' },
-    { time: '09:30', airline: 'MU', dest: 0, status: '定刻', gate: '52' },
-    { time: '10:15', airline: 'CI', dest: 0, status: '定刻', gate: '53' },
-    { time: '11:00', airline: 'CX', dest: 0, status: '定刻', gate: '54' },
-    { time: '11:45', airline: 'SQ', dest: 0, status: 'チェックイン中', gate: '55' },
-    { time: '13:00', airline: 'TG', dest: 0, status: '定刻', gate: '56' },
-    { time: '14:20', airline: 'VN', dest: 0, status: '定刻', gate: '57' },
-    { time: '15:30', airline: 'OZ', dest: 0, status: '定刻', gate: '51' },
-    { time: '16:45', airline: 'BR', dest: 0, status: '定刻', gate: '52' },
-    { time: '17:30', airline: 'TW', dest: 0, status: '定刻', gate: '53' }
-  ] : [
-    { time: '08:30', airline: 'KE', dest: 0, status: '到着済', gate: '5' },
-    { time: '09:00', airline: 'MU', dest: 0, status: '到着済', gate: '6' },
-    { time: '09:45', airline: 'CI', dest: 0, status: '定刻', gate: '7' },
-    { time: '10:30', airline: 'CX', dest: 0, status: '定刻', gate: '8' },
-    { time: '11:15', airline: 'SQ', dest: 0, status: '定刻', gate: '9' },
-    { time: '12:30', airline: 'TG', dest: 0, status: '定刻', gate: '5' },
-    { time: '13:50', airline: 'VN', dest: 0, status: '定刻', gate: '6' },
-    { time: '15:00', airline: 'OZ', dest: 0, status: '定刻', gate: '7' },
-    { time: '16:15', airline: 'BR', dest: 0, status: '定刻', gate: '8' },
-    { time: '17:00', airline: 'TW', dest: 0, status: '定刻', gate: '9' }
-  ];
+  const [schedHour, schedMinute] = scheduledTime.split(':').map(Number);
+  const scheduledMinutes = schedHour * 60 + schedMinute;
   
-  schedules.forEach((schedule, index) => {
-    const airlineCode = schedule.airline;
-    const airline = airlineData[airlineCode];
-    if (!airline) return;
-    
-    const dest = airline.destinations[schedule.dest];
-    const flightNo = `${airlineCode}${(type === 'departure' ? 700 : 800) + index}`;
-    
-    if (type === 'departure') {
-      flights.push({
-        destination: dest,
-        destinationEn: dest,
-        airline: airline.name,
-        airlineLogo: airline.logo,
-        flightNo: flightNo,
-        time: schedule.time,
-        status: schedule.status,
-        statusEn: schedule.status,
-        gate: schedule.gate
-      });
+  const [actualHour, actualMinute] = actualTime.split(':').map(Number);
+  const actualMinutes = actualHour * 60 + actualMinute;
+  
+  const timeDiff = actualMinutes - currentTimeMinutes;
+  const delay = actualMinutes - scheduledMinutes;
+  
+  if (type === 'departure') {
+    if (timeDiff < -10) {
+      return { status: '出発済', displayTime: actualTime };
+    } else if (timeDiff < 0) {
+      return { status: '搭乗終了', displayTime: actualTime };
+    } else if (timeDiff < 20) {
+      return { status: '搭乗中', displayTime: actualTime };
+    } else if (timeDiff < 40) {
+      return { status: '搭乗手続き中', displayTime: actualTime };
+    } else if (delay > 30) {
+      return { status: '使用機到着遅れ', displayTime: actualTime };
+    } else if (delay > 0) {
+      return { status: `${delay}分遅れ`, displayTime: actualTime };
     } else {
-      flights.push({
-        origin: dest,
-        originEn: dest,
-        airline: airline.name,
-        airlineLogo: airline.logo,
-        flightNo: flightNo,
-        time: schedule.time,
-        status: schedule.status,
-        statusEn: schedule.status,
-        baggage: schedule.gate
-      });
+      return { status: '定刻', displayTime: scheduledTime };
     }
-  });
+  } else {
+    if (timeDiff < -5) {
+      return { status: '到着済', displayTime: actualTime };
+    } else if (timeDiff < 5) {
+      return { status: '着陸', displayTime: actualTime };
+    } else if (timeDiff < 20) {
+      return { status: '接近中', displayTime: actualTime };
+    } else if (delay > 0) {
+      return { status: `${delay}分遅れ`, displayTime: actualTime };
+    } else {
+      return { status: '定刻', displayTime: scheduledTime };
+    }
+  }
+}
+
+// 実際の福岡空港スケジュールベース + リアルタイム風味
+function generateRealtimeFlights(type) {
+  const baseSchedule = require('./flights').generateRealisticSchedule(type);
   
-  return flights;
+  // 各フライトにリアルタイムデータを追加
+  return baseSchedule.map(flight => {
+    // ランダムな遅延を生成
+    const delayMinutes = generateRealisticDelay();
+    
+    // 実際の時刻を計算
+    const [hour, minute] = flight.scheduled.split(':').map(Number);
+    let actualHour = hour;
+    let actualMinute = minute + delayMinutes;
+    
+    // 時間の繰り上げ処理
+    if (actualMinute >= 60) {
+      actualHour += Math.floor(actualMinute / 60);
+      actualMinute = actualMinute % 60;
+    }
+    
+    const actualTime = `${String(actualHour).padStart(2, '0')}:${String(actualMinute).padStart(2, '0')}`;
+    
+    // 動的な状態を生成
+    const statusInfo = generateDynamicStatus(flight.scheduled, actualTime, type);
+    
+    return {
+      ...flight,
+      time: statusInfo.displayTime,
+      actual: actualTime,
+      status: statusInfo.status,
+      realtime: true
+    };
+  });
 }
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate'); // 1分キャッシュ
   
   const type = req.query.type || 'departure';
-  const flights = generateRealisticFlights(type);
   
-  res.json({
-    flights: flights,
-    lastUpdated: new Date().toISOString(),
-    type,
-    source: 'realistic-schedule'
-  });
+  try {
+    // リアルタイム風のデータを生成
+    const flights = generateRealtimeFlights(type);
+    
+    res.json({
+      flights: flights.slice(0, 15),
+      lastUpdated: new Date().toISOString(),
+      type,
+      source: 'simulated-realtime'
+    });
+  } catch (error) {
+    console.error('Error generating realtime data:', error);
+    
+    // エラー時は静的データにフォールバック
+    const { generateRealisticSchedule } = require('./flights');
+    res.json({
+      flights: generateRealisticSchedule(type),
+      lastUpdated: new Date().toISOString(),
+      type,
+      source: 'static-fallback'
+    });
+  }
 };
