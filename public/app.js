@@ -1,6 +1,110 @@
 let currentType = 'departure';
 let flightDisplays = [];
 
+// 空港名の日本語変換マップ
+const destinationMap = {
+  // 日本国内
+  'TOKYO HANEDA': '東京/羽田',
+  'TOKYO NARITA': '東京/成田',
+  'TOKYO HANE': '東京/羽田',
+  'TOKYO': '東京',
+  'OSAKA INTE': '大阪/伊丹',
+  'OSAKA': '大阪',
+  'OSAKA KANSAI': '大阪/関西',
+  'NAGOYA CHU': '名古屋/中部',
+  'OKINAWA NA': '沖縄/那覇',
+  'NEW CHITOSE': '札幌/新千歳',
+  'SENDAI': '仙台',
+  'NIIGATA AI': '新潟',
+  'HIROSHIMA': '広島',
+  'KOMATSU AI': '小松',
+  'IZUMO AIRP': '出雲',
+  'MIYAZAKI A': '宮崎',
+  'KAGOSHIMA': '鹿児島',
+  'KUMAMOTO': '熊本',
+  'NAGASAKI': '長崎',
+  'AMAMI AIRP': '奄美',
+  
+  // 韓国
+  'SEOUL INCH': 'ソウル/仁川',
+  'SEOUL GIMP': 'ソウル/金浦',
+  'BUSAN': 'プサン',
+  'JEJU': 'チェジュ',
+  'DAEGU': 'テグ',
+  
+  // 中国
+  'SHANGHAI P': '上海/浦東',
+  'SHANGHAI H': '上海/虹橋',
+  'BEIJING CA': '北京/首都',
+  'BEIJING DA': '北京/大興',
+  'GUANGZHOU': '廣州',
+  'SHENZHEN': '深セン',
+  'CHENGDU': '成都',
+  'XIAMEN': '厦門',
+  'DALIAN': '大連',
+  'QINGDAO': '青島',
+  'HANGZHOU': '杭州',
+  'NANJING': '南京',
+  'WUHAN': '武漢',
+  'XIAN': '西安',
+  
+  // 台湾
+  'TAIPEI TAO': '台北/桃園',
+  'TAIPEI SON': '台北/松山',
+  'KAOHSIUNG': '高雄',
+  'TAICHUNG': '台中',
+  
+  // 香港・マカオ
+  'HONG KONG': '香港',
+  'MACAU': 'マカオ',
+  
+  // 東南アジア
+  'SINGAPORE': 'シンガポール',
+  'BANGKOK SU': 'バンコク',
+  'BANGKOK DO': 'バンコク/ドンムアン',
+  'BANGKOK': 'バンコク',
+  'MANILA': 'マニラ',
+  'CEBU': 'セブ',
+  'HANOI': 'ハノイ',
+  'HO CHI MIN': 'ホーチミン',
+  'DA NANG': 'ダナン',
+  'KUALA LUMP': 'クアラルンプール',
+  'JAKARTA': 'ジャカルタ',
+  'BALI': 'バリ'
+};
+
+// 航空会社名の日本語変換マップ
+const airlineNameMap = {
+  'Skymark Airlines': 'スカイマーク',
+  'Jet Linx Aviation': 'ジェットリンクス',
+  'All Nippon Airways': '全日空',
+  'Starflyer': 'スターフライヤー',
+  'Japan Transocean Air': '日本トランスオーシャン航空',
+  'Ibex Airlines': 'アイベックスエアラインズ',
+  'Oriental Air Bridge': 'オリエンタルエアブリッジ'
+};
+
+// 状態の日本語変換マップ
+const statusMap = {
+  'estimated': '定刻',
+  'on time': '定刻',
+  'delayed': '遅延',
+  'boarding': '搭乗中',
+  'departed': '出発済',
+  'arrived': '到着済',
+  'cancelled': '欠航',
+  'gate closed': '搭乗終了',
+  'check-in': '手続き中',
+  'final call': '最終搭乗案内',
+  'ESTIMATED': '定刻',
+  'ON TIME': '定刻',
+  'DELAYED': '遅延',
+  'BOARDING': '搭乗中',
+  'DEPARTED': '出発済',
+  'ARRIVED': '到着済',
+  'CANCELLED': '欠航'
+};
+
 function initializeClock() {
     const canvas = document.getElementById('clock');
     const ctx = canvas.getContext('2d');
@@ -190,6 +294,22 @@ async function loadFlights() {
         container.appendChild(headerRow);
         
         flights.forEach((flight, index) => {
+            // 日本語変換
+            if (flight.destination) {
+                const upperDest = flight.destination.toUpperCase();
+                flight.destination = destinationMap[upperDest] || flight.destination;
+            }
+            if (flight.origin) {
+                const upperOrigin = flight.origin.toUpperCase();
+                flight.origin = destinationMap[upperOrigin] || flight.origin;
+            }
+            if (flight.airline) {
+                flight.airline = airlineNameMap[flight.airline] || flight.airline;
+            }
+            if (flight.status) {
+                flight.status = statusMap[flight.status] || statusMap[flight.status.toUpperCase()] || flight.status;
+            }
+            
             const row = document.createElement('div');
             row.className = 'flight-row';
             
