@@ -283,6 +283,8 @@ function generateRealisticSchedule(type) {
       const diff = flightTimeMinutes - currentTimeMinutes;
       
       let status = '定刻';
+      let displayTime = flight.time; // 表示する時刻（デフォルトは予定時刻）
+      
       if (diff < -30) {
         status = '到着済';
       } else if (diff < 0) {
