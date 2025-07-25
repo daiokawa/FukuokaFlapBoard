@@ -244,36 +244,40 @@ async function loadFlights() {
                     </div>
                 `;
             } else {
-                // デスクトップ用の通常表示
+                // デスクトップ用の日本語表示
                 const fields = currentType === 'departure' 
                     ? [
-                        { text: flight.destination || '不明', width: 10 },
-                        { text: flight.flightNo || 'XX000', width: 7 },
-                        { text: flight.time || '00:00', width: 5 },
-                        { text: flight.status || '不明', width: 10 },
-                        { text: flight.gate || '-', width: 3 }
+                        { text: flight.destination || '不明', className: 'flight-destination' },
+                        { text: flight.flightNo || 'XX000', className: 'flight-number' },
+                        { text: flight.time || '00:00', className: 'flight-time' },
+                        { text: flight.status || '不明', className: 'flight-status' },
+                        { text: flight.gate || '-', className: 'flight-gate' }
                       ]
                     : [
-                        { text: flight.origin || '不明', width: 10 },
-                        { text: flight.flightNo || 'XX000', width: 7 },
-                        { text: flight.time || '00:00', width: 5 },
-                        { text: flight.status || '不明', width: 10 },
-                        { text: flight.baggage || '-', width: 1 }
+                        { text: flight.origin || '不明', className: 'flight-origin' },
+                        { text: flight.flightNo || 'XX000', className: 'flight-number' },
+                        { text: flight.time || '00:00', className: 'flight-time' },
+                        { text: flight.status || '不明', className: 'flight-status' },
+                        { text: flight.baggage || '-', className: 'flight-baggage' }
                       ];
                 
                 fields.forEach(field => {
-                    const displayContainer = document.createElement('div');
-                    displayContainer.className = 'flap-display';
-                    row.appendChild(displayContainer);
+                    const textDiv = document.createElement('div');
+                    textDiv.className = field.className;
+                    textDiv.textContent = field.text;
                     
-                    const text = field.text.toUpperCase().padEnd(field.width, ' ').substring(0, field.width);
-                    
-                    setTimeout(() => {
-                        const display = createFlapDisplay(text, displayContainer);
-                        if (display) {
-                            flightDisplays.push(display);
+                    // 状態に応じたクラスを追加
+                    if (field.className === 'flight-status') {
+                        if (field.text.includes('遅れ') || field.text.includes('遅延')) {
+                            textDiv.classList.add('delayed');
+                        } else if (field.text.includes('搭乗')) {
+                            textDiv.classList.add('boarding');
+                        } else if (field.text === '定刻') {
+                            textDiv.classList.add('ontime');
                         }
-                    }, index * 100);
+                    }
+                    
+                    row.appendChild(textDiv);
                 });
             }
             
