@@ -201,7 +201,10 @@ async function loadFlights() {
                 const img = document.createElement('img');
                 img.src = flight.airlineImage;
                 img.alt = flight.airline;
+                img.crossOrigin = 'anonymous';
+                img.loading = 'lazy';
                 img.onerror = function() {
+                    console.log('Image load failed:', flight.airlineImage);
                     this.style.display = 'none';
                     const emoji = document.createElement('span');
                     emoji.className = 'airline-emoji';
