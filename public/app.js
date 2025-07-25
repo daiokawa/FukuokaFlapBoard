@@ -133,11 +133,18 @@ function createFlapDisplay(text, container) {
 async function loadFlights() {
     try {
         console.log('Loading flights...', currentType);
-        // 複数のAPIを試す（Yahoo → FR24 → シミュレーション）
-        let response = await fetch(`/api/flights-yahoo?type=${currentType}`);
+        // 複数のAPIを試す（OpenSky → Yahoo → シミュレーション）
+        let response = await fetch(`/api/flights-opensky?type=${currentType}`);
         
-        // Yahoo APIが失敗したらシミュレーション版にフォールバック
+        // OpenSky APIが失敗したらYahoo APIを試す
         if (!response.ok) {
+            console.log('OpenSky API failed, trying Yahoo API...');
+            response = await fetch(`/api/flights-yahoo?type=${currentType}`);
+        }
+        
+        // Yahoo APIも失敗したらシミュレーション版にフォールバック
+        if (!response.ok) {
+            console.log('Yahoo API failed, falling back to simulation...');
             response = await fetch(`/api/flights-realtime?type=${currentType}`);
         }
         console.log('Response status:', response.status);
