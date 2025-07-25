@@ -175,9 +175,15 @@ async function loadFlights() {
         // Add header row
         const headerRow = document.createElement('div');
         headerRow.className = 'header-row';
-        headerRow.innerHTML = currentType === 'departure' 
-            ? '<span></span><span>航空会社</span><span>目的地</span><span>便名</span><span>出発時刻</span><span>状況</span><span>搭乗口</span>'
-            : '<span></span><span>航空会社</span><span>出発地</span><span>便名</span><span>到着時刻</span><span>状況</span><span>手荷物</span>';
+        if (isMobile) {
+            headerRow.innerHTML = currentType === 'departure' 
+                ? '<span>航空会社</span><span>便名</span><span>目的地</span><span>出発時刻</span><span>状況</span>'
+                : '<span>航空会社</span><span>便名</span><span>出発地</span><span>到着時刻</span><span>状況</span>';
+        } else {
+            headerRow.innerHTML = currentType === 'departure' 
+                ? '<span></span><span>航空会社</span><span>目的地</span><span>便名</span><span>出発時刻</span><span>状況</span><span>搭乗口</span>'
+                : '<span></span><span>航空会社</span><span>出発地</span><span>便名</span><span>到着時刻</span><span>状況</span><span>手荷物</span>';
+        }
         container.appendChild(headerRow);
         
         // モバイル判定
@@ -209,9 +215,9 @@ async function loadFlights() {
                 emoji.textContent = flight.airlineLogo || '✈️';
                 logoDiv.appendChild(emoji);
             }
+            row.appendChild(logoDiv);
+            
             if (!isMobile) {
-                row.appendChild(logoDiv);
-                
                 // Add airline name
                 const nameDiv = document.createElement('div');
                 nameDiv.className = 'airline-name';
