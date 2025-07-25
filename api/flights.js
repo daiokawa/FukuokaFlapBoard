@@ -120,10 +120,26 @@ function generateRealisticSchedule(type) {
       const diff = scheduledTimeMinutes - currentTimeMinutes;
       
       let status = '定刻';
+      let displayTime = flight.time; // 表示する時刻（デフォルトは予定時刻）
       
       if (flight.actual) {
         // 実際の出発時刻がある場合
-        status = '出発済';
+        const [actualHour, actualMinute] = flight.actual.split(':').map(Number);
+        const actualTimeMinutes = actualHour * 60 + actualMinute;
+        const delay = actualTimeMinutes - scheduledTimeMinutes;
+        
+        displayTime = flight.actual; // 実際の時刻を表示
+        
+        if (delay > 0) {
+          status = `${delay}分遅れ`;
+        } else if (delay < 0) {
+          status = `${-delay}分早発`;
+        }
+        
+        // 現在時刻との比較で出発済みかチェック
+        if (actualTimeMinutes < currentTimeMinutes) {
+          status = '出発済';
+        }
       } else if (diff < -30) {
         status = '出発済';
       } else if (diff < 0) {
@@ -135,7 +151,7 @@ function generateRealisticSchedule(type) {
       } else if (diff < 120) {
         status = '出国手続き中';
       } else {
-        status = 'コードシェア便';
+        status = '定刻';
       }
       
       // 特定の便の状態を設定
@@ -157,7 +173,9 @@ function generateRealisticSchedule(type) {
         airlineLogo: airline.logo,
         airlineImage: airline.image || null,
         flightNo: flight.flightNo,
-        time: flight.time,
+        time: displayTime,
+        scheduled: flight.time,
+        actual: flight.actual || null,
         status: status,
         statusEn: status,
         gate: flight.gate
@@ -173,7 +191,7 @@ function generateRealisticSchedule(type) {
         timeDiff += 1440; // 24時間を追加
       }
       
-      return timeDiff > -120; // 2時間前から未来のフライトのみ
+      return timeDiff > -80; // 80分前から未来のフライトのみ
     }).sort((a, b) => {
       // 時刻順でソート
       const [aHour, aMinute] = a.time.split(':').map(Number);
@@ -279,7 +297,9 @@ function generateRealisticSchedule(type) {
         airlineLogo: airline.logo,
         airlineImage: airline.image || null,
         flightNo: flight.flightNo,
-        time: flight.time,
+        time: displayTime,
+        scheduled: flight.time,
+        actual: flight.actual || null,
         status: status,
         statusEn: status,
         baggage: flight.gate
@@ -295,7 +315,7 @@ function generateRealisticSchedule(type) {
         timeDiff += 1440; // 24時間を追加
       }
       
-      return timeDiff > -120; // 2時間前から未来のフライトのみ
+      return timeDiff > -80; // 80分前から未来のフライトのみ
     }).sort((a, b) => {
       // 時刻順でソート
       const [aHour, aMinute] = a.time.split(':').map(Number);
