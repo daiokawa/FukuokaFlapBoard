@@ -57,8 +57,8 @@ header {
 
 .toggle-button {
     background: #222;
-    color: #0f0;
-    border: 2px solid #0f0;
+    color: #fff;
+    border: 2px solid #666;
     padding: 10px 25px;
     font-size: 16px;
     font-weight: bold;
@@ -68,8 +68,9 @@ header {
 }
 
 .toggle-button:hover {
-    background: #0f0;
-    color: #000;
+    background: #444;
+    color: #fff;
+    border-color: #888;
 }
 
 .flap-container {
@@ -82,7 +83,7 @@ header {
 .loading {
     text-align: center;
     font-size: 24px;
-    color: #0f0;
+    color: #fff;
     padding: 50px;
     letter-spacing: 2px;
 }
@@ -164,7 +165,7 @@ header {
 .flight-destination,
 .flight-origin {
     font-size: 22px;
-    color: #0f0;
+    color: #fff;
     letter-spacing: 1px;
 }
 
@@ -176,7 +177,7 @@ header {
 
 .flight-time {
     font-size: 24px;
-    color: #0f0;
+    color: #fff;
     font-weight: 700;
     letter-spacing: 2px;
 }
@@ -203,9 +204,9 @@ header {
 }
 
 .flight-status.ontime {
-    background: #030;
-    color: #0f0;
-    border: 1px solid #0f0;
+    background: #111;
+    color: #fff;
+    border: 1px solid #666;
 }
 
 .flight-gate,

@@ -57,6 +57,24 @@ function generateRealisticSchedule(type) {
   
   if (type === 'departure') {
     const departures = [
+      // 早朝便
+      { time: '6:45', airline: 'NH', dest: '東京/羽田', flightNo: 'NH240', gate: '51' },
+      { time: '7:00', airline: 'JL', dest: '東京/羽田', flightNo: 'JL300', gate: '52' },
+      { time: '7:10', airline: '7C', dest: 'ソウル/仁川', flightNo: '7C1402', gate: '53' },
+      { time: '7:30', airline: 'OZ', dest: 'ソウル/仁川', flightNo: 'OZ130', gate: '54' },
+      { time: '7:45', airline: 'MU', dest: '上海/浦東', flightNo: 'MU516', gate: '55' },
+      { time: '8:00', airline: 'KE', dest: 'ソウル/仁川', flightNo: 'KE790', gate: '56' },
+      { time: '8:15', airline: 'CI', dest: '台北/桃園', flightNo: 'CI110', gate: '57' },
+      { time: '8:30', airline: 'CX', dest: '香港', flightNo: 'CX589', gate: '58' },
+      { time: '8:45', airline: 'TG', dest: 'バンコク', flightNo: 'TG648', gate: '59' },
+      { time: '9:00', airline: 'SQ', dest: 'シンガポール', flightNo: 'SQ656', gate: '60' },
+      { time: '9:15', airline: 'BR', dest: '台北/桃園', flightNo: 'BR106', gate: '61' },
+      { time: '9:30', airline: 'JL', dest: '東京/成田', flightNo: 'JL3050', gate: '62' },
+      { time: '9:45', airline: 'NH', dest: '大阪/伊丹', flightNo: 'NH422', gate: '63' },
+      { time: '10:00', airline: 'UO', dest: '香港', flightNo: 'UO600', gate: '64' },
+      { time: '10:15', airline: 'MM', dest: '東京/成田', flightNo: 'MM520', gate: '65' },
+      { time: '10:30', airline: '7C', dest: 'プサン', flightNo: '7C1156', gate: '66' },
+      { time: '10:45', airline: 'TW', dest: 'ソウル/仁川', flightNo: 'TW200', gate: '67' },
       { time: '11:00', airline: 'CI', dest: '台北/桃園', flightNo: 'CI111', gate: '58', scheduled: '11:00', actual: '11:06' },
       { time: '11:05', airline: 'KE', dest: 'プサン', flightNo: 'KE2136', gate: '56', scheduled: '11:05', actual: '10:58' },
       { time: '11:30', airline: 'OZ', dest: 'ソウル/仁川', flightNo: 'OZ131', gate: '53', scheduled: '11:30', actual: '11:23' },

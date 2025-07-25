@@ -272,7 +272,7 @@ async function loadFlights() {
         const flights = data.flights.slice(0, 15);
         
         if (flights.length === 0) {
-            container.innerHTML = '<div class="loading">フライト情報がありません</div>';
+            container.innerHTML = '<div class="loading">現在表示できるフライト情報がありません<br><small>（深夜時間帯のため）</small></div>';
             return;
         }
         
